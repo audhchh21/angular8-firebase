@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CrudService } from '../shared/crud.service';    // CRUD services API
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'; // Reactive form services
-import { ToastrService } from 'ngx-toastr'; // Alert message using NGX toastr
+import { CrudService } from '../shared/crud.service';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -11,38 +11,41 @@ import { ToastrService } from 'ngx-toastr'; // Alert message using NGX toastr
 })
 
 export class AddStudentComponent implements OnInit {
-  public studentForm: FormGroup;  // Define FormGroup to student's form
- 
+
+  public studentForm: FormGroup;
+
   constructor(
-    public crudApi: CrudService,  // CRUD API services
-    public fb: FormBuilder,       // Form Builder service for Reactive forms
-    public toastr: ToastrService  // Toastr service for alert message
+    public crudApi: CrudService,
+    public fb: FormBuilder,
+    public toastr: ToastrService
   ) { }
 
- 
+
   ngOnInit() {
-    this.crudApi.GetStudentsList();  // Call GetStudentsList() before main form is being called
-    this.studenForm();              // Call student form when component is ready
+    this.crudApi.GetStudentsList();
+    this.studenForm();
   }
 
-  // Reactive student form
   studenForm() {
     this.studentForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: [''],
+      lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-      mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
-    })  
+      mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}')]],
+      faculty: ['', [Validators.required]],
+      major: ['', [Validators.required]],
+      year: ['', [Validators.required, Validators.pattern('^[0-9]{1}')]],
+      address: ['']
+    })
   }
 
-  // Accessing form control using getters
   get firstName() {
     return this.studentForm.get('firstName');
   }
 
   get lastName() {
     return this.studentForm.get('lastName');
-  }  
+  }
 
   get email() {
     return this.studentForm.get('email');
@@ -52,15 +55,30 @@ export class AddStudentComponent implements OnInit {
     return this.studentForm.get('mobileNumber');
   }
 
-  // Reset student form's values
+  get faculty() {
+    return this.studentForm.get('faculty');
+  }
+
+  get major() {
+    return this.studentForm.get('major');
+  }
+
+  get year() {
+    return this.studentForm.get('year');
+  }
+
+  get address() {
+    return this.studentForm.get('address');
+  }
+
   ResetForm() {
     this.studentForm.reset();
-  }  
- 
+  }
+
   submitStudentData() {
-    this.crudApi.AddStudent(this.studentForm.value); // Submit student data using CRUD API
-    this.toastr.success(this.studentForm.controls['firstName'].value + ' successfully added!'); // Show success message when data is successfully submited
-    this.ResetForm();  // Reset form when clicked on reset button
+    this.crudApi.AddStudent(this.studentForm.value);
+    this.toastr.success('เพิ่มนักเรียน "' + this.studentForm.controls['firstName'].value + '" ใหม่สำเสร็จ!');
+    this.ResetForm();
    };
 
 }

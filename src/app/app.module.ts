@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { AddStudentComponent } from './add-student/add-student.component';
 import { StudentsListComponent } from './students-list/students-list.component';
 import { EditStudentComponent } from './edit-student/edit-student.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 
 // Reactive Form Module
 import { ReactiveFormsModule } from '@angular/forms';
@@ -27,27 +28,29 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { AppComponent } from './app.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     AddStudentComponent,
     StudentsListComponent,
-    EditStudentComponent
+    EditStudentComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(environment.firebase), // Main Angular fire module 
-    AngularFireDatabaseModule,  // Firebase database module 
-    ReactiveFormsModule,        // Reactive forms module
-    AppRoutingModule,           // Main routing module
-    BrowserAnimationsModule,    // Required animations module for Toastr
-    ToastrModule.forRoot({      // Register NgxToast NPM module
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
       timeOut: 3000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,      
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
     }),
-    NgxPaginationModule  // NGX pagination module
-    
+    NgxPaginationModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

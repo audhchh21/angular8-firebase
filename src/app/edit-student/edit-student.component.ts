@@ -12,8 +12,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class EditStudentComponent implements OnInit {
+
   editForm: FormGroup;  // Define FormGroup to student's edit form
-  
+
   constructor(
     private crudApi: CrudService,       // Inject CRUD API in constructor
     private fb: FormBuilder,            // Inject Form Builder service for Reactive forms
@@ -24,10 +25,10 @@ export class EditStudentComponent implements OnInit {
   ){ }
 
   ngOnInit() {
-    this.updateStudentData();   // Call updateStudentData() as soon as the component is ready 
+    this.updateStudentData();   // Call updateStudentData() as soon as the component is ready
     const id = this.actRoute.snapshot.paramMap.get('id');  // Getting current component's id or information using ActivatedRoute service
     this.crudApi.GetStudent(id).valueChanges().subscribe(data => {
-      this.editForm.setValue(data)  // Using SetValue() method, It's a ReactiveForm's API to store intial value of reactive form 
+      this.editForm.setValue(data)  // Using SetValue() method, It's a ReactiveForm's API to store intial value of reactive form
     })
   }
 
@@ -46,28 +47,45 @@ export class EditStudentComponent implements OnInit {
 
   get mobileNumber() {
     return this.editForm.get('mobileNumber');
-  }  
+  }
 
-  // Contains Reactive Form logic
+  get faculty() {
+    return this.editForm.get('faculty');
+  }
+
+  get major() {
+    return this.editForm.get('major');
+  }
+
+  get year() {
+    return this.editForm.get('year');
+  }
+
+  get status() {
+    return this.editForm.get('status');
+  }
+
   updateStudentData() {
     this.editForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: [''],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-      mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+      mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      faculty: ['', [Validators.required]],
+      major: ['', [Validators.required]],
+      year: ['', [Validators.required, Validators.pattern('^[0-9]{1}')]],
+      address: ['']
     })
   }
 
-  // Go back to previous component
   goBack() {
     this.location.back();
   }
 
-  // Below methods fire when somebody click on submit button
   updateForm(){
-    this.crudApi.UpdateStudent(this.editForm.value);       // Update student data using CRUD API
-    this.toastr.success(this.editForm.controls['firstName'].value + ' updated successfully');   // Show succes message when data is successfully submited
-    this.router.navigate(['view-students']);               // Navigate to student's list page when student data is updated
+    this.crudApi.UpdateStudent(this.editForm.value);
+    this.toastr.success('แก้ไขข้อมูล "' + this.editForm.controls['firstName'].value + '" สำเสร็จ!');
+    this.router.navigate(['students']);
   }
 
 }

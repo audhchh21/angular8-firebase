@@ -9,7 +9,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 export class CrudService {
   studentsRef: AngularFireList<any>;    // Reference to Student data list, its an Observable
   studentRef: AngularFireObject<any>;   // Reference to Student object, its an Observable too
-  
+
   // Inject AngularFireDatabase Dependency in Constructor
   constructor(private db: AngularFireDatabase) { }
 
@@ -19,7 +19,11 @@ export class CrudService {
       firstName: student.firstName,
       lastName: student.lastName,
       email: student.email,
-      mobileNumber: student.mobileNumber
+      mobileNumber: student.mobileNumber,
+      faculty: student.faculty,
+      major: student.major,
+      year: student.year,
+      address: student.address
     })
   }
 
@@ -33,7 +37,7 @@ export class CrudService {
   GetStudentsList() {
     this.studentsRef = this.db.list('students-list');
     return this.studentsRef;
-  }  
+  }
 
   // Update Student Object
   UpdateStudent(student: Student) {
@@ -41,14 +45,18 @@ export class CrudService {
       firstName: student.firstName,
       lastName: student.lastName,
       email: student.email,
-      mobileNumber: student.mobileNumber
+      mobileNumber: student.mobileNumber,
+      faculty: student.faculty,
+      major: student.major,
+      year: student.year,
+      address: student.address
     })
-  }  
+  }
 
   // Delete Student Object
-  DeleteStudent(id: string) { 
+  DeleteStudent(id: string) {
     this.studentRef = this.db.object('students-list/'+id);
     this.studentRef.remove();
   }
-  
+
 }
